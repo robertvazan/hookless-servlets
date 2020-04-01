@@ -180,11 +180,11 @@ import com.machinezoo.hookless.*;
 	 * because ExecutorService is not something to be configured in XML.
 	 * We are opting for fluent style to keep the whole reactive servlet API consistent.
 	 */
-	private ExecutorService executor = ReactiveExecutor.instance();
-	public ExecutorService executor() {
+	private Executor executor = ReactiveExecutor.instance();
+	public Executor executor() {
 		return executor;
 	}
-	public void executor(ExecutorService executor) {
+	public void executor(Executor executor) {
 		this.executor = executor;
 	}
 	@Override public String toString() {
