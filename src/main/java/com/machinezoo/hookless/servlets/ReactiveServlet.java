@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import javax.servlet.http.*;
 import com.machinezoo.hookless.*;
+import com.machinezoo.hookless.utils.*;
 
 /*
  * Reactive servlet is a comfy wrapper around the incredibly messy async servlet API.
