@@ -4,6 +4,7 @@ package com.machinezoo.hookless.servlets;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+import java.util.concurrent.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import org.apache.commons.collections4.*;
@@ -71,7 +72,7 @@ class ReactiveServletTask {
 	private boolean completed;
 	private void complete() {
 		if (!completed) {
-			logger.trace("Completing async context");
+			logger.trace("Completing async context.");
 			completed = true;
 			Exceptions.log(logger).run(async::complete);
 			if (activeSample != null)
@@ -102,7 +103,7 @@ class ReactiveServletTask {
 	 */
 	private static final Counter exceptionsAsync = Metrics.counter("hookless.servlet.exceptions.async");
 	private synchronized void die(Throwable exception) {
-		logger.debug("Asynchronous exception was thrown", exception);
+		logger.debug("Asynchronous exception was thrown.", exception);
 		/*
 		 * While AsyncContext.complete() is enough to stop all servlet container activity,
 		 * reactive factory producing the response might be completely unaware of it
@@ -125,7 +126,7 @@ class ReactiveServletTask {
 		 * This is because nearly all code assumes that AsyncContext already exists.
 		 */
 		async = request.startAsync();
-		guard("Failed to switch to async mode").run(() -> {
+		guard("Failed to switch to async mode.").run(() -> {
 			activeSample = activeTasks.start();
 			async.addListener(new AsyncListener() {
 				@Override public void onStartAsync(AsyncEvent event) throws IOException {
@@ -138,7 +139,7 @@ class ReactiveServletTask {
 					 */
 				}
 				@Override public void onError(AsyncEvent event) throws IOException {
-					logger.trace("Async context signals error", event.getThrowable());
+					logger.trace("Async context signals error.", event.getThrowable());
 					die(event.getThrowable());
 				}
 				@Override public void onTimeout(AsyncEvent event) throws IOException {
@@ -150,7 +151,7 @@ class ReactiveServletTask {
 					 * and some code in this class subsequently throwing an exception from container-provided API.
 					 * Since exceptions always kill the request, cleanup would happen at that moment.
 					 */
-					logger.trace("Async context signals timeout");
+					logger.trace("Async context signals timeout.");
 					timeout();
 				}
 			});
@@ -164,9 +165,9 @@ class ReactiveServletTask {
 	 */
 	private boolean responded;
 	private void respond(Runnable instructions) {
-		logger.trace("Sending response");
+		logger.trace("Sending response.");
 		responded = true;
-		guard("Failed to send response").run(instructions);
+		guard("Failed to send response.").run(instructions);
 	}
 	/*
 	 * We will attempt to send nice 504 error in case we encounter timeout.
@@ -179,7 +180,7 @@ class ReactiveServletTask {
 	 */
 	private static final Counter exceptionsTimeout = Metrics.counter("hookless.servlet.exceptions.timeout");
 	private synchronized void timeout() {
-		logger.trace("Timeout callback executed");
+		logger.trace("Timeout callback executed.");
 		/*
 		 * While AsyncContext.complete() is enough to stop all servlet container activity,
 		 * reactive factory producing the response might be completely unaware of it
@@ -199,9 +200,9 @@ class ReactiveServletTask {
 				response.setHeader("Cache-Control", "no-cache, no-store");
 			});
 			if (rrequest != null)
-				logger.warn("Timeout while processing request for {}", rrequest.url());
+				logger.warn("Timeout while processing request for {}.", rrequest.url());
 			else
-				logger.warn("Timeout while processing request");
+				logger.warn("Timeout while processing request.");
 			complete();
 		}
 		exceptionsTimeout.increment();
@@ -219,11 +220,11 @@ class ReactiveServletTask {
 	}));
 	private void parse() {
 		if (!completed) {
-			guard("Failed to parse request").run(() -> {
+			guard("Failed to parse request.").run(() -> {
 				rrequest = new ReactiveServletRequest(request);
 				OwnerTrace.of(this).tag("http.url", rrequest.url());
-				logger.trace("Connection {} -> {}", rrequest.remoteAddress(), rrequest.localAddress());
-				logger.trace("Requested {} {}", rrequest.method(), rrequest.url());
+				logger.trace("Connection {} -> {}.", rrequest.remoteAddress(), rrequest.localAddress());
+				logger.trace("Requested {} {}.", rrequest.method(), rrequest.url());
 				methodCounters.get(rrequest.method()).increment();
 			});
 			beginReading();
@@ -241,7 +242,7 @@ class ReactiveServletTask {
 	private ByteArrayOutputStream dataIn;
 	private void beginReading() {
 		if (!completed) {
-			guard("Failed to setup request body reading").run(Exceptions.sneak().runnable(() -> {
+			guard("Failed to setup request body reading.").run(Exceptions.sneak().runnable(() -> {
 				streamIn = request.getInputStream();
 				/*
 				 * We will be accumulating request body conveniently in ByteArrayOutputStream
@@ -254,7 +255,7 @@ class ReactiveServletTask {
 						 * This event runs some time after ServletInputStream.isReady() returned false
 						 * in the continuation below. We just restart the continuation in this case.
 						 */
-						logger.trace("Async reader signals data available");
+						logger.trace("Async reader signals data available.");
 						continueReading();
 					}
 					@Override public void onAllDataRead() throws IOException {
@@ -262,11 +263,11 @@ class ReactiveServletTask {
 						 * We don't differentiate between available data and EOF.
 						 * We can thus handle this event identically to onDataAvailable() above.
 						 */
-						logger.trace("Async reader signals all data was read");
+						logger.trace("Async reader signals all data was read.");
 						continueReading();
 					}
 					@Override public void onError(Throwable ex) {
-						logger.trace("Async reader signals error", ex);
+						logger.trace("Async reader signals error.", ex);
 						die(ex);
 					}
 				});
@@ -307,18 +308,18 @@ class ReactiveServletTask {
 				 * We want to always check for EOF before we check whether the loop should continue.
 				 */
 				while (true) {
-					logger.trace("Probing input stream");
+					logger.trace("Probing input stream.");
 					if (streamIn.isFinished()) {
-						logger.trace("Input stream is finished");
+						logger.trace("Input stream is finished.");
 						endReading();
 						break;
 					}
 					if (!streamIn.isReady()) {
-						logger.trace("Input stream is not ready");
+						logger.trace("Input stream is not ready.");
 						requestWaits.increment();
 						break;
 					}
-					logger.trace("Reading input stream");
+					logger.trace("Reading input stream.");
 					/*
 					 * Buffer size could be optimized. Reading 128 bytes at a time might not be most efficient.
 					 * We don't want to complicate this code though, because most reactive servlets serve GET requests anyway.
@@ -335,7 +336,7 @@ class ReactiveServletTask {
 						requestReads.increment();
 						requestBytes.increment(count);
 					}
-					logger.trace("Input stream returned {} bytes of data", count);
+					logger.trace("Input stream returned {} bytes of data.", count);
 				}
 			}));
 		}
@@ -347,7 +348,7 @@ class ReactiveServletTask {
 	private void endReading() {
 		Exceptions.sneak().run(streamIn::close);
 		rrequest.data(dataIn.toByteArray());
-		logger.trace("Request contains {} bytes of data", rrequest.data().length);
+		logger.trace("Request contains {} bytes of data.", rrequest.data().length);
 		/*
 		 * Null all temporary buffers to allow GC to collect them.
 		 */
@@ -362,9 +363,9 @@ class ReactiveServletTask {
 	 * This method still runs synchronously for requests without request body.
 	 */
 	private boolean executed;
-	private ReactiveFactory<ReactiveServletResponse> factory;
+	private CompletableFuture<ReactiveServletResponse> future;
 	private void execute() {
-		logger.trace("Starting reactive factory");
+		logger.trace("Starting reactive thread.");
 		executed = true;
 		/*
 		 * Here we jump thread pools. Reactive servlet handler will run on hookless thread pool.
@@ -375,18 +376,17 @@ class ReactiveServletTask {
 		 * which is obviously very unhealthy for hookless code controlling execution of the reactive servlet handler.
 		 * Perhaps in the future we will figure out some way to remove the thread hopping and associated latency.
 		 * 
-		 * Reactive servlet allows configuring custom executor, which we propagate to the reactive factory below.
+		 * Reactive servlet allows configuring custom executor, which we propagate to the reactive thread below.
 		 * All comments in this class that talk about hookless thread pool actually talk about configured servlet executor.
 		 * But then, hookless thread pool is the default servlet executor and it is the most common executor.
 		 * To keep things simple, we will assume that hookless thread pool is the servlet executor in all comments.
 		 */
-		factory = OwnerTrace
-			.of(new ReactiveFactory<>(() -> servlet.service(rrequest))
-				.executor(servlet.executor()))
+		future = OwnerTrace
+			.of(ReactiveFuture.supplyReactive(() -> servlet.service(rrequest), servlet.executor()))
 			.parent(this)
 			.target();
 		/*
-		 * We have to choose where to run completion callback from reactive factory:
+		 * We have to choose where to run completion callback from the CompletableFuture:
 		 * hookless thread pool, container thread pool, or some new special thread pool.
 		 * These options can be taken by choosing whenComplete() or one of whenCompleteAsync() methods in CompletableFuture.
 		 * Having an extra thread pool seems wasteful and silly, so we want to split the work between hookless and container pools.
@@ -395,7 +395,7 @@ class ReactiveServletTask {
 		 * This way we are keeping most network-related processing on container's thread pool.
 		 * 
 		 * There is a catch though. Scheduling on container's pool via AsyncContext.start() only works before AsyncContext is completed.
-		 * The troubling scenario is that request processing takes too long, timeout kicks in and cancels reactive factory,
+		 * The troubling scenario is that request processing takes too long, timeout kicks in and cancels the reactive thread,
 		 * which causes its CompletableFuture to complete exceptionally with CancellationException and
 		 * invoke our lightweight hookless-side handler with said exception as a parameter. When this handler runs,
 		 * it may find out that timeout processing in servlet container has already completed the AsyncContext.
@@ -410,20 +410,24 @@ class ReactiveServletTask {
 		 * Blocking on hookless thread pool is impolite at best. Fortunately, such lock competition is unlikely.
 		 * The only two possibilities are timeout and async error on the socket. Both of them have simple, fast handlers.
 		 */
-		factory.start().whenComplete((rresponse, exception) -> {
-			logger.trace("Reactive factory has completed");
+		future.whenComplete((rresponse, exception) -> {
+			logger.trace("Reactive thread has completed.");
 			schedule(rresponse, exception);
 		});
 	}
 	/*
-	 * Since the reactive factory is unaware of servlet processing, we have to explicitly cancel it in case of trouble.
+	 * Since the reactive thread is unaware of servlet processing, we have to explicitly cancel it in case of trouble.
 	 * This has to be done whenever async error or timeout event is received.
-	 * It doesn't have to be called from guard(), because no code runs while we wait for reactive factory.
+	 * It doesn't have to be called from guard(), because no code runs while we wait for the reactive thread.
 	 */
 	private void cancel() {
-		if (factory != null) {
-			logger.trace("Cancelling reactive factory");
-			factory.cancel();
+		if (future != null) {
+			logger.trace("Cancelling reactive thread.");
+			/*
+			 * The CompletableFuture was created with ReactiveFuture.supplyReactive(),
+			 * which monitors its CompletableFuture and reacts to cancellation by stopping the reactive thread.
+			 */
+			future.cancel(true);
 		}
 	}
 	/*
@@ -433,7 +437,7 @@ class ReactiveServletTask {
 	 */
 	private synchronized void schedule(ReactiveServletResponse rresponse, Throwable exception) {
 		if (!completed) {
-			guard("Failed to schedule callback on container's thread pool").run(() -> {
+			guard("Failed to schedule callback on container's thread pool.").run(() -> {
 				async.start(() -> {
 					if (exception != null)
 						fail(exception);
@@ -463,7 +467,7 @@ class ReactiveServletTask {
 	 */
 	private static final Counter exceptionsService = Metrics.counter("hookless.servlet.exceptions.service");
 	private synchronized void fail(Throwable exception) {
-		logger.trace("Service exception callback executed");
+		logger.trace("Service exception callback executed.");
 		/*
 		 * Check for 'responded' flag to avoid double response in case timeout or something else ran first.
 		 */
@@ -504,7 +508,7 @@ class ReactiveServletTask {
 		}
 	}));
 	private synchronized void serve(ReactiveServletResponse rresponse) {
-		logger.trace("Service completion callback executed");
+		logger.trace("Service completion callback executed.");
 		/*
 		 * Check for 'responded' flag to avoid double response in case timeout or something else ran first.
 		 */
@@ -513,7 +517,7 @@ class ReactiveServletTask {
 				int status = rresponse.status();
 				response.setStatus(status);
 				statusCounters.get(status).increment();
-				logger.trace("Status code {}", rresponse.status());
+				logger.trace("Status code {}.", rresponse.status());
 				/*
 				 * It is tempting to set some headers (notably Content-Length) automatically,
 				 * but that's dangerous practice that will inevitably break some applications.
@@ -521,11 +525,11 @@ class ReactiveServletTask {
 				 * will break HEAD requests where it will incorrectly report zero-length content.
 				 */
 				for (Map.Entry<String, String> header : rresponse.headers().entrySet()) {
-					logger.trace("Sending header {}: {}", header.getKey(), header.getValue());
+					logger.trace("Sending header {}: {}.", header.getKey(), header.getValue());
 					response.setHeader(header.getKey(), header.getValue());
 				}
 				for (Cookie cookie : rresponse.cookies()) {
-					logger.trace("Sending cookie {}", cookie.getName());
+					logger.trace("Sending cookie {}.", cookie.getName());
 					response.addCookie(cookie);
 				}
 			}));
@@ -542,7 +546,7 @@ class ReactiveServletTask {
 	private ServletOutputStream streamOut;
 	private void beginWriting(ByteBuffer data) {
 		if (!completed) {
-			guard("Failed to setup response body writing").run(Exceptions.sneak().runnable(() -> {
+			guard("Failed to setup response body writing.").run(Exceptions.sneak().runnable(() -> {
 				/*
 				 * Duplicate the response buffer to avoid modifying its state (mark, position).
 				 * 
@@ -552,7 +556,7 @@ class ReactiveServletTask {
 				 * If we call rewind(), buffer's position is lost and apps cannot return buffer ranges.
 				 */
 				dataOut = data.duplicate();
-				logger.trace("Preparing to send {} bytes of data", dataOut.limit());
+				logger.trace("Preparing to send {} bytes of data.", dataOut.limit());
 				streamOut = response.getOutputStream();
 				streamOut.setWriteListener(new WriteListener() {
 					@Override public void onWritePossible() throws IOException {
@@ -560,11 +564,11 @@ class ReactiveServletTask {
 						 * This event runs some time after ServletOutputStream.isReady() returned false
 						 * in the continuation below. We can just restart the continuation in this case.
 						 */
-						logger.trace("Async writer signals writability");
+						logger.trace("Async writer signals writability.");
 						continueWriting();
 					}
 					@Override public void onError(Throwable ex) {
-						logger.trace("Async writer signals error", ex);
+						logger.trace("Async writer signals error.", ex);
 						die(ex);
 					}
 				});
@@ -596,16 +600,16 @@ class ReactiveServletTask {
 	private static final Counter responseBytes = Metrics.counter("hookless.servlet.response.bytes");
 	private static final Counter responseWaits = Metrics.counter("hookless.servlet.response.waits");
 	private synchronized void continueWriting() {
-		logger.trace("Write callback executed");
+		logger.trace("Write callback executed.");
 		if (!completed) {
-			guard("Failed to write response").run(Exceptions.sneak().runnable(() -> {
+			guard("Failed to write response.").run(Exceptions.sneak().runnable(() -> {
 				/*
 				 * This is a one-and-a-half loop terminated by isReady() test in the middle.
 				 * We want to always check for EOF before we check whether the loop should continue.
 				 */
 				while (true) {
 					if (dataOut.remaining() <= 0) {
-						logger.trace("All response data has been sent");
+						logger.trace("All response data has been sent.");
 						/*
 						 * There is nothing special to do here. Just complete the AsyncContext.
 						 */
@@ -613,11 +617,11 @@ class ReactiveServletTask {
 						break;
 					}
 					if (!streamOut.isReady()) {
-						logger.trace("Output stream is not ready");
+						logger.trace("Output stream is not ready.");
 						responseWaits.increment();
 						break;
 					}
-					logger.trace("Writing to output stream");
+					logger.trace("Writing to output stream.");
 					/*
 					 * We will use 4KB buffer unless the response body is too small.
 					 * 4KB fills three packets and it's efficient enough for fast I/O.
@@ -642,7 +646,7 @@ class ReactiveServletTask {
 					streamOut.write(bufferOut, 0, written);
 					responseWrites.increment();
 					responseBytes.increment(written);
-					logger.trace("Output channel accepted {} bytes of data", written);
+					logger.trace("Output channel accepted {} bytes of data.", written);
 				}
 			}));
 		}
