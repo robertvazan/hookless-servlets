@@ -8,7 +8,7 @@ import java.util.*;
 import java.util.concurrent.*;
 import javax.servlet.http.*;
 import com.machinezoo.hookless.*;
-import com.machinezoo.hookless.utils.*;
+import com.machinezoo.hookless.util.*;
 
 /*
  * Reactive servlet is a comfy wrapper around the incredibly messy async servlet API.
@@ -181,7 +181,7 @@ import com.machinezoo.hookless.utils.*;
 	 * because ExecutorService is not something to be configured in XML.
 	 * We are opting for fluent style to keep the whole reactive servlet API consistent.
 	 */
-	private Executor executor = ReactiveExecutor.instance();
+	private Executor executor = ReactiveExecutor.common();
 	public Executor executor() {
 		return executor;
 	}
