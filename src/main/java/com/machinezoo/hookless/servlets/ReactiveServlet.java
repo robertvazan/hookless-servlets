@@ -166,6 +166,8 @@ import com.machinezoo.hookless.util.*;
 	 * we need to store intermediate state somewhere meantime.
 	 */
 	@Override protected void service(HttpServletRequest request, HttpServletResponse response) {
+		Objects.requireNonNull(request);
+		Objects.requireNonNull(response);
 		new ReactiveServletTask(ReactiveServlet.this, request, response).start();
 	}
 	/*
@@ -186,6 +188,7 @@ import com.machinezoo.hookless.util.*;
 		return executor;
 	}
 	public void executor(Executor executor) {
+		Objects.requireNonNull(executor);
 		this.executor = executor;
 	}
 	@Override public String toString() {

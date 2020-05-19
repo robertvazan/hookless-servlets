@@ -81,6 +81,7 @@ public class ReactiveServletRequest {
 		return headers;
 	}
 	public ReactiveServletRequest headers(Map<String, String> headers) {
+		Objects.requireNonNull(headers);
 		this.headers = headers;
 		return this;
 	}
@@ -95,6 +96,7 @@ public class ReactiveServletRequest {
 		return cookies;
 	}
 	public ReactiveServletRequest cookies(List<Cookie> cookies) {
+		Objects.requireNonNull(cookies);
 		this.cookies = cookies;
 		return this;
 	}
@@ -118,6 +120,7 @@ public class ReactiveServletRequest {
 		return data;
 	}
 	public ReactiveServletRequest data(byte[] data) {
+		Objects.requireNonNull(data);
 		this.data = data;
 		return this;
 	}
