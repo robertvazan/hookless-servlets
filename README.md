@@ -1,5 +1,7 @@
 # Hookless Servlets #
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.machinezoo.hookless/hookless-servlets)](https://search.maven.org/artifact/com.machinezoo.hookless/hookless-servlets)
+
 This extension of Hookless reactive programming library provides reactive servlets as wrappers around Java servlet API.
 
 * Documentation: [Website (Hookless)](https://hookless.machinezoo.com/)
