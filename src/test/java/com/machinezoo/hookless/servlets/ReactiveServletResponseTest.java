@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 
 public class ReactiveServletResponseTest {
-	@Test public void caseInsensitive() {
+	@Test
+	public void caseInsensitive() {
 		ReactiveServletResponse r = new ReactiveServletResponse();
 		r.headers().put("HEADER", "value");
 		assertEquals("value", r.headers().get("header"));

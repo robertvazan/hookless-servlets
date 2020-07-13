@@ -21,7 +21,8 @@ import com.machinezoo.hookless.util.*;
  * it can be configured in XML or via annotations, and all the container-provided HttpServlet methods are accessible.
  * Apps also get a chance to hook into any low-level servlet functionality if they find a reason to do so.
  */
-@SuppressWarnings("serial") public abstract class ReactiveServlet extends HttpServlet {
+@SuppressWarnings("serial")
+public abstract class ReactiveServlet extends HttpServlet {
 	public ReactiveServlet() {
 		OwnerTrace.of(this)
 			.alias("servlet")
@@ -165,7 +166,8 @@ import com.machinezoo.hookless.util.*;
 	 * because reactive request handling might take some time and
 	 * we need to store intermediate state somewhere meantime.
 	 */
-	@Override protected void service(HttpServletRequest request, HttpServletResponse response) {
+	@Override
+	protected void service(HttpServletRequest request, HttpServletResponse response) {
 		Objects.requireNonNull(request);
 		Objects.requireNonNull(response);
 		new ReactiveServletTask(ReactiveServlet.this, request, response).start();
@@ -191,7 +193,8 @@ import com.machinezoo.hookless.util.*;
 		Objects.requireNonNull(executor);
 		this.executor = executor;
 	}
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		return OwnerTrace.of(this).toString();
 	}
 }

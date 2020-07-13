@@ -10,7 +10,8 @@ import javax.servlet.http.*;
 import org.junit.jupiter.api.*;
 
 public class ReactiveServletRequestTest {
-	@Test public void convert() {
+	@Test
+	public void convert() {
 		HttpServletRequest hr = mock(HttpServletRequest.class);
 		when(hr.getRemoteAddr()).thenReturn("12.34.56.78");
 		when(hr.getRemotePort()).thenReturn(12345);
@@ -37,7 +38,8 @@ public class ReactiveServletRequestTest {
 		assertEquals("n", rq.cookies().get(0).getName());
 		assertEquals("v", rq.cookies().get(0).getValue());
 	}
-	@Test public void caseInsensitive() {
+	@Test
+	public void caseInsensitive() {
 		ReactiveServletRequest rq = new ReactiveServletRequest();
 		rq.headers().put("HEADER", "value");
 		assertEquals("value", rq.headers().get("header"));

@@ -89,7 +89,8 @@ class ReactiveServletTask {
 	private static final Counter exceptionsContainer = Metrics.counter("hookless.servlet.exceptions.container");
 	private ExceptionHandler guard(String message) {
 		return new ExceptionHandler() {
-			@Override public boolean handle(Throwable exception) {
+			@Override
+			public boolean handle(Throwable exception) {
 				logger.debug(message, exception);
 				complete();
 				exceptionsContainer.increment();
@@ -129,20 +130,24 @@ class ReactiveServletTask {
 		guard("Failed to switch to async mode.").run(() -> {
 			activeSample = activeTasks.start();
 			async.addListener(new AsyncListener() {
-				@Override public void onStartAsync(AsyncEvent event) throws IOException {
+				@Override
+				public void onStartAsync(AsyncEvent event) throws IOException {
 				}
-				@Override public void onComplete(AsyncEvent event) throws IOException {
+				@Override
+				public void onComplete(AsyncEvent event) throws IOException {
 					/*
 					 * Here we assume that completion events are either caused by our own code (calling AsyncContext.complete())
 					 * or they are related to async errors or timeouts that are handled below.
 					 * If this assumption is correct (fingers crossed), we can leave this event handler empty.
 					 */
 				}
-				@Override public void onError(AsyncEvent event) throws IOException {
+				@Override
+				public void onError(AsyncEvent event) throws IOException {
 					logger.trace("Async context signals error.", event.getThrowable());
 					die(event.getThrowable());
 				}
-				@Override public void onTimeout(AsyncEvent event) throws IOException {
+				@Override
+				public void onTimeout(AsyncEvent event) throws IOException {
 					/*
 					 * Theoretically, under extreme circumstances, timeout might occur before our event handler is registered.
 					 * We would miss timeout event in that case. Servlet container would then complete the AsyncContext for us,
@@ -214,7 +219,8 @@ class ReactiveServletTask {
 	private ReactiveServletRequest rrequest;
 	private static final Set<String> countedMethods = new HashSet<>(Arrays.asList("GET", "HEAD", "OPTIONS", "POST", "PUT", "DELETE", "PATCH"));
 	private static final Map<String, Counter> methodCounters = Collections.synchronizedMap(LazyMap.lazyMap(new HashMap<>(), new Transformer<String, Counter>() {
-		@Override public Counter transform(String method) {
+		@Override
+		public Counter transform(String method) {
 			return Metrics.counter("hookless.servlet.method", "method", countedMethods.contains(method) ? method : "OTHER");
 		}
 	}));
@@ -250,7 +256,8 @@ class ReactiveServletTask {
 				 */
 				dataIn = new ByteArrayOutputStream();
 				streamIn.setReadListener(new ReadListener() {
-					@Override public void onDataAvailable() throws IOException {
+					@Override
+					public void onDataAvailable() throws IOException {
 						/*
 						 * This event runs some time after ServletInputStream.isReady() returned false
 						 * in the continuation below. We just restart the continuation in this case.
@@ -258,7 +265,8 @@ class ReactiveServletTask {
 						logger.trace("Async reader signals data available.");
 						continueReading();
 					}
-					@Override public void onAllDataRead() throws IOException {
+					@Override
+					public void onAllDataRead() throws IOException {
 						/*
 						 * We don't differentiate between available data and EOF.
 						 * We can thus handle this event identically to onDataAvailable() above.
@@ -266,7 +274,8 @@ class ReactiveServletTask {
 						logger.trace("Async reader signals all data was read.");
 						continueReading();
 					}
-					@Override public void onError(Throwable ex) {
+					@Override
+					public void onError(Throwable ex) {
 						logger.trace("Async reader signals error.", ex);
 						die(ex);
 					}
@@ -502,7 +511,8 @@ class ReactiveServletTask {
 	 * This happens on servlet container's thread pool after we have jumped threads from hookless.
 	 */
 	private static final Map<Integer, Counter> statusCounters = Collections.synchronizedMap(LazyMap.lazyMap(new HashMap<>(), new Transformer<Integer, Counter>() {
-		@Override public Counter transform(Integer status) {
+		@Override
+		public Counter transform(Integer status) {
 			String sanitized = status != null && status >= 100 && status < 600 ? Integer.toString(status) : "other";
 			return Metrics.counter("hookless.servlet.status", "status", sanitized);
 		}
@@ -559,7 +569,8 @@ class ReactiveServletTask {
 				logger.trace("Preparing to send {} bytes of data.", dataOut.limit());
 				streamOut = response.getOutputStream();
 				streamOut.setWriteListener(new WriteListener() {
-					@Override public void onWritePossible() throws IOException {
+					@Override
+					public void onWritePossible() throws IOException {
 						/*
 						 * This event runs some time after ServletOutputStream.isReady() returned false
 						 * in the continuation below. We can just restart the continuation in this case.
@@ -567,7 +578,8 @@ class ReactiveServletTask {
 						logger.trace("Async writer signals writability.");
 						continueWriting();
 					}
-					@Override public void onError(Throwable ex) {
+					@Override
+					public void onError(Throwable ex) {
 						logger.trace("Async writer signals error.", ex);
 						die(ex);
 					}
@@ -651,7 +663,8 @@ class ReactiveServletTask {
 			}));
 		}
 	}
-	@Override public String toString() {
+	@Override
+	public String toString() {
 		return OwnerTrace.of(this).toString();
 	}
 }
