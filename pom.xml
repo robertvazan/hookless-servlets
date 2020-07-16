@@ -143,6 +143,10 @@
 					<!-- Make the CI server email us when we break javadoc. -->
 					<failOnWarnings>true</failOnWarnings>
 					<notimestamp>true</notimestamp>
+					<links>
+						<!-- Java EE 7 javadoc required for links to javax.servlet.*. -->
+						<link>https://docs.oracle.com/javaee/7/api/</link>
+					</links>
 				</configuration>
 				<executions>
 					<execution>
