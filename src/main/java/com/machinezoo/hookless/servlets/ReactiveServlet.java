@@ -9,6 +9,7 @@ import java.util.concurrent.*;
 import javax.servlet.http.*;
 import com.machinezoo.hookless.*;
 import com.machinezoo.hookless.util.*;
+import com.machinezoo.stagean.*;
 
 /*
  * Reactive servlet is a comfy wrapper around the incredibly messy async servlet API.
@@ -21,6 +22,11 @@ import com.machinezoo.hookless.util.*;
  * it can be configured in XML or via annotations, and all the container-provided HttpServlet methods are accessible.
  * Apps also get a chance to hook into any low-level servlet functionality if they find a reason to do so.
  */
+/**
+ * Reactive alternative to {@link HttpServlet}.
+ */
+@StubDocs
+@NoTests
 @SuppressWarnings("serial")
 public abstract class ReactiveServlet extends HttpServlet {
 	public ReactiveServlet() {

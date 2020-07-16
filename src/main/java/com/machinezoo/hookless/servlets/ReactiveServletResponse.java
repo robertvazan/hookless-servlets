@@ -4,6 +4,7 @@ package com.machinezoo.hookless.servlets;
 import java.nio.*;
 import java.util.*;
 import javax.servlet.http.*;
+import com.machinezoo.stagean.*;
 
 /*
  * Reactive response may be produced multiple times, several times as a draft and once as a non-draft result.
@@ -16,6 +17,11 @@ import javax.servlet.http.*;
  * Aside from consistency, it has the advantage of simpler API and cleaner implementation.
  * The only special feature lost from HttpServletResponse is adding session IDs to URLs.
  */
+/**
+ * Reactive alternative to {@link HttpServletResponse} used in {@link ReactiveServlet}.
+ */
+@StubDocs
+@DraftTests("see coverage")
 public class ReactiveServletResponse {
 	/*
 	 * Just like with the request, HttpServletResponse offers rich API full of convenience methods.

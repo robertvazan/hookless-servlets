@@ -5,6 +5,7 @@ import java.net.*;
 import java.util.*;
 import javax.servlet.http.*;
 import com.machinezoo.noexception.*;
+import com.machinezoo.stagean.*;
 
 /*
  * Requests are only produced by reactive servlets. There's no reason why app would want to modify them.
@@ -22,6 +23,11 @@ import com.machinezoo.noexception.*;
  * We also want to let the application retain reference to the request long after it has been serviced.
  * For these reasons, we want reactive request to be pure data, which is impossible with HttpServletRequest.
  */
+/**
+ * Reactive alternative to {@link HttpServletRequest} used in {@link ReactiveServlet}.
+ */
+@StubDocs
+@DraftTests("see coverage")
 public class ReactiveServletRequest {
 	public ReactiveServletRequest() {
 	}
