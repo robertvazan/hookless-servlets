@@ -1,4 +1,4 @@
-// Part of Hookless Servlets: https://hookless.machinezoo.com
+// Part of Hookless Servlets: https://hookless.machinezoo.com/servlets
 package com.machinezoo.hookless.servlets;
 
 import static java.util.stream.Collectors.*;

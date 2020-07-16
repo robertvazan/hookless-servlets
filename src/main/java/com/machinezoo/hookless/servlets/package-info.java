@@ -1,6 +1,7 @@
-// Part of Hookless: https://hookless.machinezoo.com
+// Part of Hookless Servlets: https://hookless.machinezoo.com/servlets
 /**
  * Reactive versions of classes from {@link javax.servlet.http}.
+ * 
+ * @see <a href="https://hookless.machinezoo.com/servlets">Hookless Servlets tutorial</a>
  */
-@com.machinezoo.stagean.DraftDocs("link to tutorial page")
 package com.machinezoo.hookless.servlets;
