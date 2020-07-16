@@ -229,7 +229,7 @@ class ReactiveServletTask {
 			guard("Failed to parse request.").run(() -> {
 				rrequest = new ReactiveServletRequest(request);
 				OwnerTrace.of(this).tag("http.url", rrequest.url());
-				logger.trace("Connection {} -> {}.", rrequest.remoteAddress(), rrequest.localAddress());
+				logger.trace("Connection {} -> {}.", rrequest.remote(), rrequest.local());
 				logger.trace("Requested {} {}.", rrequest.method(), rrequest.url());
 				methodCounters.get(rrequest.method()).increment();
 			});

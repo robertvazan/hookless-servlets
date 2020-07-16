@@ -39,20 +39,20 @@ public class ReactiveServletRequest {
 	 * Reactive servlet initializes all request properties to something non-null. This simplifies application code.
 	 * Default constructor provides reasonable defaults for everything except URL, which simplifies unit tests.
 	 */
-	private InetSocketAddress localAddress = new InetSocketAddress(0);
-	public InetSocketAddress localAddress() {
-		return localAddress;
+	private InetSocketAddress local = new InetSocketAddress(0);
+	public InetSocketAddress local() {
+		return local;
 	}
-	public ReactiveServletRequest localAddress(InetSocketAddress localAddress) {
-		this.localAddress = localAddress;
+	public ReactiveServletRequest local(InetSocketAddress local) {
+		this.local = local;
 		return this;
 	}
-	private InetSocketAddress remoteAddress = new InetSocketAddress(0);
-	public InetSocketAddress remoteAddress() {
-		return remoteAddress;
+	private InetSocketAddress remote = new InetSocketAddress(0);
+	public InetSocketAddress remote() {
+		return remote;
 	}
-	public ReactiveServletRequest remoteAddress(InetSocketAddress remoteAddress) {
-		this.remoteAddress = remoteAddress;
+	public ReactiveServletRequest remote(InetSocketAddress remote) {
+		this.remote = remote;
 		return this;
 	}
 	private String method = "GET";
@@ -130,8 +130,8 @@ public class ReactiveServletRequest {
 	 * This constructor is used by reactive servlet, but it might be useful in application code or tests too.
 	 */
 	public ReactiveServletRequest(HttpServletRequest request) {
-		localAddress = parseAddress(request.getLocalAddr(), request.getLocalPort());
-		remoteAddress = parseAddress(request.getRemoteAddr(), request.getRemotePort());
+		local = parseAddress(request.getLocalAddr(), request.getLocalPort());
+		remote = parseAddress(request.getRemoteAddr(), request.getRemotePort());
 		method = request.getMethod();
 		/*
 		 * HttpServletRequest provides numerous convenience methods for obtaining parts of the request URL,

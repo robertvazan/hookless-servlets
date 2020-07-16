@@ -25,10 +25,10 @@ public class ReactiveServletRequestTest {
 		when(hr.getHeaders("Header2")).thenReturn(Collections.enumeration(Arrays.asList("value1", "value2")));
 		when(hr.getCookies()).thenReturn(new Cookie[] { new Cookie("n", "v") });
 		ReactiveServletRequest rq = new ReactiveServletRequest(hr);
-		assertEquals("12.34.56.78", rq.remoteAddress().getHostString());
-		assertEquals(12345, rq.remoteAddress().getPort());
-		assertEquals("192.168.0.33", rq.localAddress().getHostString());
-		assertEquals(8080, rq.localAddress().getPort());
+		assertEquals("12.34.56.78", rq.remote().getHostString());
+		assertEquals(12345, rq.remote().getPort());
+		assertEquals("192.168.0.33", rq.local().getHostString());
+		assertEquals(8080, rq.local().getPort());
 		assertEquals("POST", rq.method());
 		assertEquals("http://somplace/something?k1=v1&k2=v2", rq.url());
 		assertThat(rq.headers().keySet(), containsInAnyOrder("Header1", "Header2"));
