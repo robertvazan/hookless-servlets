@@ -6,13 +6,13 @@
 
 Hookless Servlets, a part of [Hookless](https://hookless.machinezoo.com/) project, is a Java library that implements [reactive servlets](https://hookless.machinezoo.com/servlets) as a [reactive adapter](https://hookless.machinezoo.com/adapters) for Java EE's servlets.
 
-## Download ##
-
-Hookless Servlets are available from [Maven Central](https://search.maven.org/artifact/com.machinezoo.hookless/hookless-servlets). Further setup instructions are on the [website](https://hookless.machinezoo.com/servlets). Hookless Servlets are distributed under [Apache License 2.0](LICENSE).
-
 ## Status ##
 
 The library is undocumented but functional and fairly stable. Class-level progress is tracked using [Stagean annotations](https://stagean.machinezoo.com/).
+
+## Download ##
+
+Hookless Servlets are available from [Maven Central](https://search.maven.org/artifact/com.machinezoo.hookless/hookless-servlets). Further setup instructions are on the [website](https://hookless.machinezoo.com/servlets). Hookless Servlets are distributed under [Apache License 2.0](LICENSE).
 
 ## Documentation ##
 
