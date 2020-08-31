@@ -30,7 +30,7 @@ public class ReactiveServletRequestTest {
 		assertEquals("192.168.0.33", rq.local().getHostString());
 		assertEquals(8080, rq.local().getPort());
 		assertEquals("POST", rq.method());
-		assertEquals("http://somplace/something?k1=v1&k2=v2", rq.url());
+		assertEquals("http://somplace/something?k1=v1&k2=v2", rq.url().toString());
 		assertThat(rq.headers().keySet(), containsInAnyOrder("Header1", "Header2"));
 		assertEquals("value", rq.headers().get("header1"));
 		assertEquals("value1, value2", rq.headers().get("header2"));

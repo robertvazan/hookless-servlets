@@ -4,7 +4,6 @@ package com.machinezoo.hookless.servlets;
 import java.net.*;
 import java.util.*;
 import javax.servlet.http.*;
-import com.machinezoo.noexception.*;
 import com.machinezoo.stagean.*;
 
 /*
@@ -69,11 +68,11 @@ public class ReactiveServletRequest {
 		this.method = method;
 		return this;
 	}
-	private String url;
-	public String url() {
+	private URI url;
+	public URI url() {
 		return url;
 	}
-	public ReactiveServletRequest url(String url) {
+	public ReactiveServletRequest url(URI url) {
 		this.url = url;
 		return this;
 	}
@@ -151,14 +150,13 @@ public class ReactiveServletRequest {
 			address.append('?');
 			address.append(query);
 		}
-		url = address.toString();
 		/*
 		 * Sometimes an invalid or denormalized URL sneaks past the servlet container and the front-end web server.
 		 * We will construct an URI instance here to ensure the URL can be parsed.
 		 * URI constructor will throw if the URL cannot be parsed.
 		 * We will also call URI's normalize() method to make the URL as consistent as possible.
 		 */
-		url = Exceptions.sneak().get(() -> new URI(url).normalize().toString());
+		url = URI.create(address.toString()).normalize();
 		/*
 		 * HTTP specification allows us to join duplicate headers into comma-separated list.
 		 * Such joined header should be equivalent to a list of duplicate headers.
