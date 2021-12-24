@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.machinezoo.hookless</groupId>
@@ -39,20 +38,19 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.release>11</maven.compiler.release>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.machinezoo.hookless</groupId>
 			<artifactId>hookless</artifactId>
-			<version>0.13.0</version>
+			<version>0.14.0</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<version>5.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -89,6 +87,11 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<!-- Needed for Java 11. -->
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.6.2</version>
+				</plugin>
 				<plugin>
 					<!-- Older surefire versions did not support JUnit 5. -->
 					<artifactId>maven-surefire-plugin</artifactId>
@@ -139,9 +142,12 @@
 				<version>3.2.0</version>
 				<configuration>
 					<notimestamp>true</notimestamp>
+					<bottom>
+						<![CDATA[<!-- No copyright message. -->]]>
+					</bottom>
 					<links>
-						<!-- Java EE 7 javadoc required for links to javax.servlet.*. -->
-						<link>https://docs.oracle.com/javaee/7/api/</link>
+						<!-- Jakarta EE does not have javadocs under apidocs/ on its homepage: https://projects.eclipse.org/projects/ee4j.servlet -->
+						<link>https://javadoc.io/doc/jakarta.servlet/jakarta.servlet-api/latest/</link>
 					</links>
 				</configuration>
 				<executions>

@@ -3,8 +3,8 @@ package com.machinezoo.hookless.servlets;
 
 import java.net.*;
 import java.util.*;
-import javax.servlet.http.*;
 import com.machinezoo.stagean.*;
+import jakarta.servlet.http.*;
 
 /*
  * Requests are only produced by reactive servlets. There's no reason why app would want to modify them.

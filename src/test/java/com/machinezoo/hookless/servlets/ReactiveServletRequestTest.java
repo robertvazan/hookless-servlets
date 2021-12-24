@@ -6,8 +6,8 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import java.util.*;
-import javax.servlet.http.*;
 import org.junit.jupiter.api.*;
+import jakarta.servlet.http.*;
 
 public class ReactiveServletRequestTest {
 	@Test

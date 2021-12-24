@@ -6,10 +6,10 @@ import java.lang.reflect.*;
 import java.nio.*;
 import java.util.*;
 import java.util.concurrent.*;
-import javax.servlet.http.*;
 import com.machinezoo.hookless.*;
 import com.machinezoo.hookless.util.*;
 import com.machinezoo.stagean.*;
+import jakarta.servlet.http.*;
 
 /*
  * Reactive servlet is a comfy wrapper around the incredibly messy async servlet API.

@@ -3,8 +3,8 @@ package com.machinezoo.hookless.servlets;
 
 import java.nio.*;
 import java.util.*;
-import javax.servlet.http.*;
 import com.machinezoo.stagean.*;
+import jakarta.servlet.http.*;
 
 /*
  * Reactive response may be produced multiple times, several times as a draft and once as a non-draft result.

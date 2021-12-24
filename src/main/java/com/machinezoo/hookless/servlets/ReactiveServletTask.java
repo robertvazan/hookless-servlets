@@ -5,8 +5,6 @@ import java.io.*;
 import java.nio.*;
 import java.util.*;
 import java.util.concurrent.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
 import org.apache.commons.collections4.*;
 import org.apache.commons.collections4.map.*;
 import org.slf4j.*;
@@ -15,6 +13,8 @@ import com.machinezoo.hookless.util.*;
 import com.machinezoo.noexception.*;
 import io.micrometer.core.instrument.*;
 import io.micrometer.core.instrument.Timer;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
 
 /*
  * Servlet async API is a madness filled with race rules. We need some hard rules to keep this mess under control.
