@@ -145,10 +145,6 @@
 					<bottom>
 						<![CDATA[<!-- No copyright message. -->]]>
 					</bottom>
-					<links>
-						<!-- Jakarta EE does not have javadocs under apidocs/ on its homepage: https://projects.eclipse.org/projects/ee4j.servlet -->
-						<link>https://javadoc.io/doc/jakarta.servlet/jakarta.servlet-api/latest/</link>
-					</links>
 				</configuration>
 				<executions>
 					<execution>
