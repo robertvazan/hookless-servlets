@@ -9,6 +9,4 @@ module com.machinezoo.hookless.servlets {
 	requires com.machinezoo.hookless;
 	requires transitive jakarta.servlet;
 	requires org.apache.commons.collections4;
-	requires org.slf4j;
-	requires micrometer.core;
 }
