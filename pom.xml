@@ -45,13 +45,14 @@
 		<dependency>
 			<groupId>com.machinezoo.hookless</groupId>
 			<artifactId>hookless</artifactId>
-			<version>0.14.2</version>
+			<version>0.14.3</version>
 		</dependency>
+		<!-- We are not using official Jakarta servlet API dependency, because it is reportedly broken. -->
+		<!-- https://github.com/eclipse/jetty.project/issues/6947 -->
 		<dependency>
-			<groupId>jakarta.servlet</groupId>
-			<artifactId>jakarta.servlet-api</artifactId>
-			<version>5.0.0</version>
-			<scope>provided</scope>
+			<groupId>org.eclipse.jetty.toolchain</groupId>
+			<artifactId>jetty-jakarta-servlet-api</artifactId>
+			<version>5.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
