@@ -1,8 +1,11 @@
 // Part of Hookless Servlets: https://hookless.machinezoo.com/servlets
+import com.machinezoo.stagean.*;
+
 /**
  * Reactive versions of classes from {@link jakarta.servlet.http}.
  * See {@link com.machinezoo.hookless.servlets} package.
  */
+@ApiIssue("maybe jetty jakarta libs")
 module com.machinezoo.hookless.servlets {
 	exports com.machinezoo.hookless.servlets;
 	requires com.machinezoo.stagean;
