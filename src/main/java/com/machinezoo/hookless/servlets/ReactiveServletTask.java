@@ -11,6 +11,7 @@ import org.slf4j.*;
 import com.machinezoo.hookless.*;
 import com.machinezoo.hookless.util.*;
 import com.machinezoo.noexception.*;
+import com.machinezoo.noexception.slf4j.*;
 import io.micrometer.core.instrument.*;
 import io.micrometer.core.instrument.Timer;
 import jakarta.servlet.*;
@@ -74,7 +75,7 @@ class ReactiveServletTask {
 		if (!completed) {
 			logger.trace("Completing async context.");
 			completed = true;
-			Exceptions.log(logger).run(async::complete);
+			ExceptionLogging.log(logger).run(async::complete);
 			if (activeSample != null)
 				activeSample.stop();
 			if (timerSample != null)
@@ -487,7 +488,7 @@ class ReactiveServletTask {
 			 * It will also cover monitoring in deployment.
 			 * If the app doesn't like loud logging, it can filter on logger level or catch its own exceptions.
 			 */
-			Exceptions.log(logger).handle(exception);
+			ExceptionLogging.log(logger).handle(exception);
 			respond(() -> {
 				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 				/*

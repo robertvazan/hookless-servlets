@@ -5,10 +5,11 @@ import com.machinezoo.stagean.*;
  * Reactive versions of classes from {@link jakarta.servlet.http}.
  * See {@link com.machinezoo.hookless.servlets} package.
  */
-@ApiIssue("maybe jetty jakarta libs")
+@ApiIssue("maybe official jakarta libs")
 module com.machinezoo.hookless.servlets {
 	exports com.machinezoo.hookless.servlets;
 	requires com.machinezoo.stagean;
+	requires com.machinezoo.noexception.slf4j;
 	requires com.machinezoo.hookless;
 	/*
 	 * Transitive, because ReactiveServlet inherits from HttpServlet.
