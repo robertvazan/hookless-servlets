@@ -10,6 +10,7 @@ class Project(scaffold.Java):
     def pom_description(self): return 'Reactive adapters for jakarta.servlet.* classes.'
     def inception_year(self): return 2018
     def jdk_version(self): return 17
+    def complete_javadoc(self): return False
     def stagean_annotations(self): return True
     
     def dependencies(self):

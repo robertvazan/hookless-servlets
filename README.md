@@ -30,6 +30,8 @@ See [homepage](https://hookless.machinezoo.com/servlets).
 * [Homepage](https://hookless.machinezoo.com/servlets)
 * [Javadoc](https://hookless.machinezoo.com/javadocs/servlets/com.machinezoo.hookless.servlets/com/machinezoo/hookless/servlets/package-summary.html)
 
+Some APIs are undocumented. You might have to peek in the [source code](src/main/java/com/machinezoo/hookless/servlets).
+
 ## Feedback
 
 Bug reports and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md).
