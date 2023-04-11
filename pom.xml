@@ -5,7 +5,7 @@
 
 	<groupId>com.machinezoo.hookless</groupId>
 	<artifactId>hookless-servlets</artifactId>
-	<version>0.5.4</version>
+	<version>0.5.5</version>
 
 	<name>Hookless Servlets</name>
 	<description>Reactive adapters for jakarta.servlet.* classes.</description>
