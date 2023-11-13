@@ -3,7 +3,7 @@
 
 # Hookless Servlets
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.machinezoo.hookless/hookless-servlets)](https://search.maven.org/artifact/com.machinezoo.hookless/hookless-servlets)
+[![Maven Central](https://img.shields.io/maven-central/v/com.machinezoo.hookless/hookless-servlets)](https://central.sonatype.com/artifact/com.machinezoo.hookless/hookless-servlets)
 [![Build status](https://github.com/robertvazan/hookless-servlets/workflows/build/badge.svg)](https://github.com/robertvazan/hookless-servlets/actions/workflows/build.yml)
 [![Test coverage](https://codecov.io/gh/robertvazan/hookless-servlets/branch/master/graph/badge.svg)](https://codecov.io/gh/robertvazan/hookless-servlets)
 
